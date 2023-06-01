@@ -31,6 +31,11 @@ class _FoodFormState extends State<FoodForm> {
       print('Calorías: $_calories, por gramos: $_isPerGram');
     }
   }
+  
+  bool validar_nombreComida(String value) {
+    final alphaRegex = RegExp(r'^[a-zA-Z ]+$');
+    return alphaRegex.hasMatch(value);
+  }
 
   Future<void> _selectImage() async {
     final imagePicker = ImagePicker();
@@ -90,6 +95,9 @@ class _FoodFormState extends State<FoodForm> {
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'Por favor, ingresa el nombre de la comida';
+                      }                      
+                      if (!validar_nombreComida(value)) {
+                        return 'Solo se permiten letras en el nombre de la comida';
                       }
                       return null;
                     },
