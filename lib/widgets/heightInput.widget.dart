@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class WeightInputWidget extends StatefulWidget {
+class HeightInputWidget extends StatefulWidget {
   final Function(double)? onChanged;
-  final double minWeight;
+  final double minHeight;
 
-  const WeightInputWidget({Key? key, this.onChanged, this.minWeight = 0})
+  const HeightInputWidget({Key? key, this.onChanged, this.minHeight = 0})
       : super(key: key);
 
   @override
-  State<WeightInputWidget> createState() => _WeightInputWidgetState();
+  State<HeightInputWidget> createState() => _HeightInputWidgetState();
 }
 
-class _WeightInputWidgetState extends State<WeightInputWidget> {
+class _HeightInputWidgetState extends State<HeightInputWidget> {
   TextEditingController textEditingController = TextEditingController();
 
   @override
@@ -36,7 +36,7 @@ class _WeightInputWidgetState extends State<WeightInputWidget> {
         decoration: InputDecoration(
           hintText: 'Altura (cm)',
           errorText:
-              _validateInput() ? 'Peso mínimo: ${widget.minWeight} kg' : null,
+              _validateInput() ? 'Altura mínima: ${widget.minHeight} cm' : null,
         ),
       ),
     );
@@ -45,7 +45,7 @@ class _WeightInputWidgetState extends State<WeightInputWidget> {
   bool _validateInput() {
     if (textEditingController.text.isNotEmpty) {
       final double? parsedValue = double.tryParse(textEditingController.text);
-      if (parsedValue == null || parsedValue < widget.minWeight) {
+      if (parsedValue == null || parsedValue < widget.minHeight) {
         return true;
       }
     }

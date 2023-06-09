@@ -4,6 +4,7 @@ import 'package:first_app_flutter/Routes/routes.dart';
 import 'package:first_app_flutter/widgets/agePicker.widget.dart';
 import 'package:first_app_flutter/widgets/genderSelection.widget.dart';
 import 'package:first_app_flutter/widgets/weightInput.widget.dart';
+import 'package:first_app_flutter/widgets/heightInput.widget.dart';
 
 class PreSettings2View extends StatefulWidget {
   const PreSettings2View({Key? key}) : super(key: key);
@@ -27,7 +28,8 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
 
   double? enteredWeight;
   double? enteredHeight;
-  final double minHeight = 120; // Minimum height in centimeters
+  final double minHeight = 120;
+  final double minWeight = 35;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,8 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                       "Comidas al día",
-                      style: TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
+                      style:
+                          TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
@@ -66,7 +69,8 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                       "Edad",
-                      style: TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
+                      style:
+                          TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
@@ -77,7 +81,8 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                       "Género",
-                      style: TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
+                      style:
+                          TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
@@ -94,7 +99,8 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                       "Peso",
-                      style: TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
+                      style:
+                          TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
@@ -111,7 +117,8 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                     padding: EdgeInsets.all(8.0),
                     child: Text(
                       "Altura",
-                      style: TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
+                      style:
+                          TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
@@ -156,15 +163,20 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Por favor, verifica los siguientes criterios antes de continuar:',
-                                      style: const TextStyle(color: Colors.red),
+                                      style: TextStyle(color: Colors.red),
                                     ),
-                                    if (!isGenderSelected()) Text('- Selecciona un género.'),
-                                    if (enteredWeight == null || enteredWeight! < 35)
-                                      Text('- Ingresa un peso válido mayor que 35.'),
-                                    if (enteredHeight == null || enteredHeight! < minHeight)
-                                      Text('- Ingresa una altura válida mayor o igual a $minHeight.'),
+                                    if (!isGenderSelected())
+                                      const Text('- Selecciona un género.'),
+                                    if (enteredWeight == null ||
+                                        enteredWeight! < minWeight)
+                                      const Text(
+                                          '- Ingresa un peso válido mayor que 35.'),
+                                    if (enteredHeight == null ||
+                                        enteredHeight! < minHeight)
+                                      Text(
+                                          '- Ingresa una altura válida mayor o igual a $minHeight.'),
                                   ],
                                 ),
                                 actions: [
@@ -206,7 +218,8 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
         _selectButton(index);
       },
       style: TextButton.styleFrom(
-        backgroundColor: isSelected ? Colors.blue : const Color.fromARGB(255, 219, 219, 219),
+        backgroundColor:
+            isSelected ? Colors.blue : const Color.fromARGB(255, 219, 219, 219),
         shape: const CircleBorder(),
       ),
       child: Text(
@@ -217,53 +230,5 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
         ),
       ),
     );
-  }
-}
-
-class HeightInputWidget extends StatefulWidget {
-  final ValueChanged<double>? onChanged;
-  final double minHeight;
-
-  const HeightInputWidget({Key? key, this.onChanged, this.minHeight = 0}) : super(key: key);
-
-  @override
-  _HeightInputWidgetState createState() => _HeightInputWidgetState();
-}
-
-class _HeightInputWidgetState extends State<HeightInputWidget> {
-  TextEditingController _textEditingController = TextEditingController();
-
-  @override
-  void dispose() {
-    _textEditingController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: _textEditingController,
-      keyboardType: TextInputType.number,
-      onChanged: (value) {
-        final double? parsedValue = double.tryParse(value);
-        if (parsedValue != null) {
-          widget.onChanged?.call(parsedValue);
-        }
-      },
-      decoration: InputDecoration(
-        hintText: 'Altura (cm)',
-        errorText: _validateInput() ? 'Altura mínima: ${widget.minHeight} cm' : null,
-      ),
-    );
-  }
-
-  bool _validateInput() {
-    if (_textEditingController.text.isNotEmpty) {
-      final double? parsedValue = double.tryParse(_textEditingController.text);
-      if (parsedValue == null || parsedValue < widget.minHeight) {
-        return true;
-      }
-    }
-    return false;
   }
 }
