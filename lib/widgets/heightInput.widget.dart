@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class HeightInputWidget extends StatefulWidget {
   final Function(double)? onChanged;
   final double minHeight;
+  final double maxHeight;
 
-  const HeightInputWidget({Key? key, this.onChanged, this.minHeight = 0})
+  const HeightInputWidget({Key? key, this.onChanged, this.minHeight = 0, this.maxHeight = 210})
       : super(key: key);
 
   @override
@@ -36,7 +37,7 @@ class _HeightInputWidgetState extends State<HeightInputWidget> {
         decoration: InputDecoration(
           hintText: 'Altura (cm)',
           errorText:
-              _validateInput() ? 'Altura mínima: ${widget.minHeight} cm' : null,
+              _validateInput() ? 'Altura mínima: ${widget.minHeight} cm, máxima: ${widget.maxHeight} cm' : null,
         ),
       ),
     );
@@ -45,7 +46,9 @@ class _HeightInputWidgetState extends State<HeightInputWidget> {
   bool _validateInput() {
     if (textEditingController.text.isNotEmpty) {
       final double? parsedValue = double.tryParse(textEditingController.text);
-      if (parsedValue == null || parsedValue < widget.minHeight) {
+      if (parsedValue == null || 
+          parsedValue < widget.minHeight ||
+          parsedValue > widget.maxHeight) {
         return true;
       }
     }
