@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class WeightInputWidget extends StatefulWidget {
   final Function(double)? onChanged;
   final double minWeight;
+  final double maxWeight;
 
-  const WeightInputWidget({Key? key, this.onChanged, this.minWeight = 0})
+  const WeightInputWidget({Key? key, this.onChanged, this.minWeight = 0, this.maxWeight = 180})
       : super(key: key);
 
   @override
@@ -34,9 +35,9 @@ class _WeightInputWidgetState extends State<WeightInputWidget> {
           }
         },
         decoration: InputDecoration(
-          hintText: 'Altura (cm)',
+          hintText: 'Peso (kg)',
           errorText:
-              _validateInput() ? 'Peso mínimo: ${widget.minWeight} kg' : null,
+              _validateInput() ? 'Peso mínimo: ${widget.minWeight} kg, máximo: ${widget.maxWeight} kg ' : null,
         ),
       ),
     );
@@ -45,7 +46,9 @@ class _WeightInputWidgetState extends State<WeightInputWidget> {
   bool _validateInput() {
     if (textEditingController.text.isNotEmpty) {
       final double? parsedValue = double.tryParse(textEditingController.text);
-      if (parsedValue == null || parsedValue < widget.minWeight) {
+      if (parsedValue == null || 
+      parsedValue < widget.minWeight ||
+      parsedValue > widget.maxWeight) {
         return true;
       }
     }
