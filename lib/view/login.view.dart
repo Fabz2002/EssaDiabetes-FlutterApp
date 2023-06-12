@@ -53,8 +53,7 @@ class _LoginViewState extends State<LoginView> {
         await documentRef.set({});
       }
       bool authenticated = await auth.authenticate(
-        localizedReason:
-            "Scan your fingerprint (or face or whatever) to authenticate",
+        localizedReason: "Escanee su huella digital para autenticar",
         options:
             const AuthenticationOptions(stickyAuth: true, biometricOnly: true),
       );
@@ -64,7 +63,7 @@ class _LoginViewState extends State<LoginView> {
 
       if (authenticated) {
         // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, Routes.PresettingPage);
+        Navigator.pushNamed(context, Routes.PresettingPage, arguments: id);
       }
     } on PlatformException catch (e) {
       // ignore: avoid_print
