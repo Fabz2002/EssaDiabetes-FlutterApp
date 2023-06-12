@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
-
 import 'package:first_app_flutter/Routes/routes.dart';
 import 'package:first_app_flutter/widgets/agePicker.widget.dart';
 import 'package:first_app_flutter/widgets/genderSelection.widget.dart';
 import 'package:first_app_flutter/widgets/weightInput.widget.dart';
 import 'package:first_app_flutter/widgets/heightInput.widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PreSettings2View extends StatefulWidget {
-  const PreSettings2View({Key? key}) : super(key: key);
+  final String id;
+  const PreSettings2View({Key? key, required this.id}) : super(key: key);
 
   @override
   State<PreSettings2View> createState() => _PreSettings2ViewState();
 }
 
 class _PreSettings2ViewState extends State<PreSettings2View> {
+  late String id;
+  late int selectedAge =18;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    id = widget.id;
+  }
+
   int _selectedButtonIndex = 0;
   String? selectedGender;
   void _selectButton(int index) {
@@ -30,6 +40,20 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
   double? enteredHeight;
   final double minHeight = 120;
   final double minWeight = 35;
+  final double maxWeight = 180;
+  final double maxHeight = 210;
+
+  void saveDataToDatabase() async {
+    final db = FirebaseFirestore.instance;
+    final documentRef = db.collection("Users").doc(id);
+
+    await documentRef.update({
+      'genero': selectedGender,
+      'peso': enteredWeight,
+      'altura': enteredHeight,
+      'edad': selectedAge,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +98,12 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                     ),
                   ),
                 ),
-                const AgePicker(),
+                AgePicker(
+                  onAgeSelected: (age) {
+                    setState(() {
+                      selectedAge = age;
+                    });
+                  },),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: const Padding(
@@ -110,6 +139,8 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                       enteredWeight = weight;
                     });
                   },
+                  minWeight: minWeight,
+                  maxWeight: maxWeight,
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
@@ -129,6 +160,7 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                     });
                   },
                   minHeight: minHeight,
+                  maxHeight: maxHeight,
                 ),
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 50.0),
@@ -143,9 +175,12 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                       onPressed: () {
                         if (isGenderSelected() &&
                             enteredWeight != null &&
-                            enteredWeight! >= 35 &&
+                            enteredWeight! >= minWeight &&
+                            enteredWeight! <= maxWeight &&
                             enteredHeight != null &&
-                            enteredHeight! >= minHeight) {
+                            enteredHeight! >= minHeight &&
+                            enteredHeight! <= maxHeight) {
+                          saveDataToDatabase();
                           Navigator.pushNamed(context, Routes.Homepage);
                         } else {
                           showDialog(
@@ -168,15 +203,33 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                                       style: TextStyle(color: Colors.red),
                                     ),
                                     if (!isGenderSelected())
-                                      const Text('- Selecciona un género.'),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                    const Text(
+                                      'Selecciona un género.',
+                                      style: TextStyle(fontSize: 14),
+                                    ),
                                     if (enteredWeight == null ||
-                                        enteredWeight! < minWeight)
-                                      const Text(
-                                          '- Ingresa un peso válido mayor que 35.'),
+                                        enteredWeight! < minWeight ||
+                                        enteredWeight! > maxWeight)
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                    Text(
+                                      'Peso válido mayor o igual a $minWeight y menor o igual a $maxWeight.',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
                                     if (enteredHeight == null ||
-                                        enteredHeight! < minHeight)
-                                      Text(
-                                          '- Ingresa una altura válida mayor o igual a $minHeight.'),
+                                        enteredHeight! < minHeight ||
+                                        enteredHeight! > maxHeight)
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                    Text(
+                                      'Altura válida mayor o igual a $minHeight y menor o igual a $maxHeight.',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
                                   ],
                                 ),
                                 actions: [
