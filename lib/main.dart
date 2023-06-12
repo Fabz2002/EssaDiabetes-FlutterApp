@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:first_app_flutter/view/Splash.view.dart';
+import 'package:first_app_flutter/view/splash.view.dart';
 import 'Routes/pages.dart';
 import 'firebase_options.dart';
+import 'Provider/provider.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,12 +28,18 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "EssaDiabetes",
-      theme: ThemeData(fontFamily: 'Poppins'),
-      home: const SplashView(),
-      routes: Pages.route,
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<UserService>(create: (_) => UserService())
+        ],
+        builder: (context, _) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: "EssaDiabetes",
+            theme: ThemeData(fontFamily: 'Poppins'),
+            home: const SplashView(),
+            routes: Pages.route,
+          );
+        });
   }
 }

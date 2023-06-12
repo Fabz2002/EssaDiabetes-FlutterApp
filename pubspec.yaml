@@ -46,6 +46,7 @@ dependencies:
   cloud_firestore: ^4.7.1
   flutter_material_pickers: ^3.3.0
   image_picker: ^0.8.7+5
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:

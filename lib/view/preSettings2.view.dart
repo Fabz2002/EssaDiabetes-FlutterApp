@@ -1,3 +1,4 @@
+import 'package:first_app_flutter/Provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:first_app_flutter/Routes/routes.dart';
 import 'package:first_app_flutter/widgets/agePicker.widget.dart';
@@ -5,6 +6,7 @@ import 'package:first_app_flutter/widgets/genderSelection.widget.dart';
 import 'package:first_app_flutter/widgets/weightInput.widget.dart';
 import 'package:first_app_flutter/widgets/heightInput.widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
 
 class PreSettings2View extends StatefulWidget {
   final String id;
@@ -16,7 +18,7 @@ class PreSettings2View extends StatefulWidget {
 
 class _PreSettings2ViewState extends State<PreSettings2View> {
   late String id;
-  late int selectedAge =18;
+  late int selectedAge = 18;
 
   @override
   void didChangeDependencies() {
@@ -44,6 +46,7 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
   final double maxHeight = 210;
 
   void saveDataToDatabase() async {
+    UserService userService = Provider.of<UserService>(context, listen: false);
     final db = FirebaseFirestore.instance;
     final documentRef = db.collection("Users").doc(id);
 
@@ -53,6 +56,19 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
       'altura': enteredHeight,
       'edad': selectedAge,
     });
+
+    try {
+      // Llama a fetchUser.
+      await userService.fetchUser(id);
+    } catch (e) {
+      if (e is FirebaseException && e.code == 'not-found') {
+        // Si no se encuentra el documento, muestra un mensaje de error.
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('El usuario con ID $id no se encuentra.')),
+        );
+      }
+    }
   }
 
   @override
@@ -103,7 +119,8 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                     setState(() {
                       selectedAge = age;
                     });
-                  },),
+                  },
+                ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: const Padding(
@@ -172,7 +189,7 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 4.0, bottom: 8.0),
                     child: TextButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (isGenderSelected() &&
                             enteredWeight != null &&
                             enteredWeight! >= minWeight &&
@@ -181,8 +198,11 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                             enteredHeight! >= minHeight &&
                             enteredHeight! <= maxHeight) {
                           saveDataToDatabase();
+
+                          // ignore: use_build_context_synchronously
                           Navigator.pushNamed(context, Routes.Homepage);
                         } else {
+                          // ignore: use_build_context_synchronously
                           showDialog(
                             context: context,
                             builder: (context) {
