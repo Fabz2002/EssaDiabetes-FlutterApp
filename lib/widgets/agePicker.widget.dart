@@ -2,7 +2,9 @@ import 'package:first_app_flutter/data/ages.dart';
 import 'package:flutter/cupertino.dart';
 
 class AgePicker extends StatefulWidget {
-  const AgePicker({super.key});
+  final Function(int) onAgeSelected;
+
+  const AgePicker({Key? key, required this.onAgeSelected}) : super(key: key);
 
   @override
   State<AgePicker> createState() => _AgePickerState();
@@ -91,8 +93,7 @@ class _AgePickerState extends State<AgePicker> {
                 this.index = index;
               });
               final item = items[index];
-              // ignore: avoid_print
-              print('item: $item');
+              widget.onAgeSelected(int.parse(item));
             }
           },
         ),
