@@ -88,10 +88,10 @@ class HealthyFoodTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
-        children: const [
+        children: [
           Text(
             "Alimentos Saludables",
             style: TextStyle(
