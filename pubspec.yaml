@@ -110,6 +110,10 @@ flutter:
     - assets/images/quinoa.jpg
     - assets/images/nueces.jpg
     - assets/images/arrozintegral.jpg
+    - assets/images/sentado.png
+    - assets/images/jardinero.png
+    - assets/images/trotar.png
+    - assets/images/nadar.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
