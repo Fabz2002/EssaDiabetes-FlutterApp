@@ -85,29 +85,6 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      "Comidas al día",
-                      style:
-                          TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildButtonRow(0, 2),
-                      _buildButtonRow(1, 3),
-                      _buildButtonRow(2, 4),
-                      _buildButtonRow(3, 5),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
                       "Edad",
                       style:
                           TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
