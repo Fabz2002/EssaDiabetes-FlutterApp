@@ -177,7 +177,8 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                           saveDataToDatabase();
 
                           // ignore: use_build_context_synchronously
-                          Navigator.pushNamed(context, Routes.Homepage);
+                          Navigator.pushNamed(context, Routes.Homepage,
+                              arguments: id);
                         } else {
                           // ignore: use_build_context_synchronously
                           showDialog(

@@ -19,16 +19,14 @@ class UserService with ChangeNotifier {
       print(_user);
       double caloriasNecesarias;
       if (_user.genero == 'Masculino') {
-        caloriasNecesarias = (66 +
-                (13.7 * _user.peso) +
-                (5 * _user.altura) -
-                (6.8 * _user.edad)) *
-            _user.nivelActividad;
+        caloriasNecesarias =
+            (5 + (5 * _user.peso) + (6.25 * _user.altura) - (5 * _user.edad)) *
+                _user.nivelActividad;
       } else if (_user.genero == 'Femenino') {
-        caloriasNecesarias = (655 +
-                (9.6 * _user.peso) +
-                (1.8 * _user.altura) -
-                (4.7 * _user.edad)) *
+        caloriasNecesarias = ((9 * _user.peso) +
+                (6.25 * _user.altura) -
+                (5 * _user.edad) -
+                161) *
             _user.nivelActividad;
       } else {
         throw Exception('Invalid gender: ${_user.genero}');

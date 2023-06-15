@@ -27,39 +27,39 @@ class _PreSettingsViewState extends State<PreSettingsView> {
 
   int _selectedButtonIndex = 0;
   double selectednivelActividad = 1.2;
-  @override
-  void initState() {
-    super.initState();
-    registerDevice();
-    // callOnFcmApiSendPushNotifications(
-    //     title: 'EssaDiabetes',
-    //     body:
-    //         'Bienvenido a EssaDiabetes,recuerda que desde ahora tu dni : ${widget.id} será tu identficacion para todo');
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   registerDevice();
+  //   // callOnFcmApiSendPushNotifications(
+  //   //     title: 'EssaDiabetes',
+  //   //     body:
+  //   //         'Bienvenido a EssaDiabetes,recuerda que desde ahora tu dni : ${widget.id} será tu identficacion para todo');
+  // }
 
-  void registerDevice() async {
-    String? token = await _firebaseMessaging.getToken();
-    if (token != null) {
-      print("Token de registro: $token");
+  // void registerDevice() async {
+  //   String? token = await _firebaseMessaging.getToken();
+  //   if (token != null) {
+  //     print("Token de registro: $token");
 
-      final response = await http.post(
-        Uri.parse('http://192.168.18.27:3000/register'),
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: {'token': token},
-      );
-      print('Código de estado de la respuesta: ${response.statusCode}');
-      print('Cuerpo de la respuesta: ${response.body}');
-      if (response.statusCode == 200) {
-        print('Registrado exitosamente');
-      } else {
-        print('Error al registrar el dispositivo');
-      }
-    } else {
-      print('No se pudo obtener el token de registro de FCM');
-    }
-  }
+  //     final response = await http.post(
+  //       Uri.parse('http://192.168.18.27:3000/register'),
+  //       headers: {
+  //         'Content-Type': 'application/x-www-form-urlencoded',
+  //       },
+  //       body: {'token': token},
+  //     );
+  //     print('Código de estado de la respuesta: ${response.statusCode}');
+  //     print('Cuerpo de la respuesta: ${response.body}');
+  //     if (response.statusCode == 200) {
+  //       print('Registrado exitosamente');
+  //     } else {
+  //       print('Error al registrar el dispositivo');
+  //     }
+  //   } else {
+  //     print('No se pudo obtener el token de registro de FCM');
+  //   }
+  // }
 
   void _selectButton(int index) {
     double nivelActividad;
