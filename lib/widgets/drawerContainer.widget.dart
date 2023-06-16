@@ -32,7 +32,7 @@ class DrawerForInfo extends StatelessWidget {
             title: const Text('Home'),
             onTap: () {
               _scaffoldKey.currentState?.openEndDrawer();
-              Navigator.pushNamed(context, Routes.Homepage);
+              Navigator.pushNamed(context, Routes.Homepage, arguments: "");
             },
           ),
           ListTile(

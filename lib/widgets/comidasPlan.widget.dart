@@ -2,7 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 class ComidasPlan extends StatefulWidget {
   final String id;
@@ -15,7 +14,6 @@ class ComidasPlan extends StatefulWidget {
 
 class _ComidasPlanState extends State<ComidasPlan> {
   late String id;
-  DatabaseReference? dbRef;
   String ruta = '';
   List<Map<dynamic, dynamic>> lists = [];
 
@@ -24,49 +22,55 @@ class _ComidasPlanState extends State<ComidasPlan> {
     super.initState();
     id = widget.id;
 
-    // Obtén una instancia de Firestore
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    // Obtén la referencia del documento que deseas leer
-    DocumentReference docRef = firestore.collection('Users').doc(id);
+    DocumentReference userDocRef = firestore.collection('Users').doc(id);
 
-    // Obtiene los datos del documento
-    docRef.get().then((DocumentSnapshot snapshot) {
-      if (snapshot.exists) {
-        var fieldValue = snapshot.get('caloriasNecesarias');
-        if (fieldValue >= 2100) {
-          setState(() {
-            ruta = 'comidas/cal2300/d';
-            dbRef = FirebaseDatabase.instance.ref().child(ruta);
-          });
-        } else {
-          setState(() {
-            ruta = 'comidas/cal2000/d';
-            dbRef = FirebaseDatabase.instance.ref().child(ruta);
-          });
+    userDocRef.get().then((DocumentSnapshot userSnapshot) {
+      if (userSnapshot.exists) {
+        var calories = userSnapshot.get('caloriasNecesarias');
+        String mealDoc = '';
+
+        if (calories >= 2000) {
+          mealDoc = 'cal2300';
+        } else if (calories <= 1999 && calories > 1690) {
+          mealDoc = 'cal2000';
+        } else if (calories <= 1690 && calories > 1399) {
+          mealDoc = 'cal1700';
+        } else if (calories <= 1399) {
+          mealDoc = 'cal1300';
         }
-        print("el valor $fieldValue");
+
+        firestore
+            .collection('Comidas')
+            .doc(mealDoc)
+            .get()
+            .then((DocumentSnapshot mealSnapshot) {
+          if (mealSnapshot.exists) {
+            Map<String, dynamic> data =
+                mealSnapshot.data() as Map<String, dynamic>;
+            Map<String, dynamic> meals =
+                data['desayuno'] as Map<String, dynamic>;
+            setState(() {
+              lists = meals.entries
+                  .map((e) => {
+                        'titulo': e.value['titulo'],
+                        'img': e.value['img'],
+                        'kcal': e.value['kcal']
+                      })
+                  .toList();
+            });
+          } else {
+            print('El documento de comidas no existe.');
+          }
+        }).catchError((error) {
+          print('Error al obtener el documento de comidas: $error');
+        });
       } else {
-        // El documento no existe
-        print('El documento no existe.');
+        print('El documento del usuario no existe.');
       }
     }).catchError((error) {
-      // Error al obtener el documento
-      print('Error al obtener el documento: $error');
-    });
-
-    dbRef?.onValue.listen((event) {
-      var snapshot = event.snapshot;
-      var values = snapshot.value as List;
-      lists.clear();
-      // ignore: avoid_function_literals_in_foreach_calls
-      values.forEach((value) {
-        if (value != null) {
-          Map<dynamic, dynamic> mapValue = value as Map<dynamic, dynamic>;
-          lists.add(mapValue);
-        }
-      });
-      setState(() {});
+      print('Error al obtener el documento del usuario: $error');
     });
   }
 
