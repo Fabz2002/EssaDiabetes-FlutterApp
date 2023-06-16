@@ -54,6 +54,13 @@ dependencies:
   injectable: ^1.5.3
   freezed_annotation: ^2.1.0
   source_gen: ^1.0.0
+  shared_preferences: ^2.1.2
+  dartz: ^0.10.1
+
+  #bloc
+  flutter_bloc: ^7.1.0
+  equatable: ^2.0.1
+  meta: ^1.7.0
 
 dev_dependencies:
   flutter_test:

@@ -45,7 +45,7 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
   final double maxWeight = 180;
   final double maxHeight = 210;
 
-  void saveDataToDatabase() async {
+  Future<void> saveDataToDatabase() async {
     UserService userService = Provider.of<UserService>(context, listen: false);
     final db = FirebaseFirestore.instance;
     final documentRef = db.collection("Users").doc(id);
@@ -60,6 +60,7 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
     try {
       // Llama a fetchUser.
       await userService.fetchUser(id);
+      return;
     } catch (e) {
       if (e is FirebaseException && e.code == 'not-found') {
         // Si no se encuentra el documento, muestra un mensaje de error.
@@ -174,7 +175,7 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
                             enteredHeight != null &&
                             enteredHeight! >= minHeight &&
                             enteredHeight! <= maxHeight) {
-                          saveDataToDatabase();
+                          await saveDataToDatabase();
 
                           // ignore: use_build_context_synchronously
                           Navigator.pushNamed(context, Routes.Homepage,

@@ -1,17 +1,24 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:first_app_flutter/core/helper/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:first_app_flutter/view/splash.view.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'Routes/pages.dart';
+import 'core/ioc/injectable.dart';
 import 'firebase_options.dart';
 import 'Provider/provider.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await configureDependencies();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(MultiBlocProvider(
+    providers: BlocProviderHelper().providres,
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
