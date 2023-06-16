@@ -65,21 +65,35 @@ class _HomeViewState extends State<HomeView> {
               const WelcomeMessageContainer(),
               const CategoriesListScroll(),
               const HealthyFoodTitle(),
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ComidasPlan(id: id),
-                      const HealthyFoodList(),
-                    ],
-                  ),
-                ),
-              ),
+              HealthyContainer(id: id),
             ],
           ),
         ),
         drawer: DrawerForInfo(
           scaffoldKey: _scaffoldKey,
+        ),
+      ),
+    );
+  }
+}
+
+class HealthyContainer extends StatelessWidget {
+  const HealthyContainer({
+    super.key,
+    required this.id,
+  });
+
+  final String id;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            ComidasPlan(id: id),
+            const HealthyFoodList(),
+          ],
         ),
       ),
     );
@@ -130,10 +144,10 @@ class HealthyFoodTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Row(
-        children: const [
+        children: [
           Text(
             "Alimentos Saludables",
             style: TextStyle(
