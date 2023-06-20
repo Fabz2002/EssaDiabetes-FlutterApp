@@ -1,7 +1,8 @@
-import 'package:first_app_flutter/data/foodhealthyinfo.dart';
 import 'package:first_app_flutter/theme.dart';
 import 'package:first_app_flutter/widgets/drawerContainer.widget.dart';
 import 'package:flutter/material.dart';
+
+import '../Static/foodhealthyinfo.dart';
 
 class HealthyFoodInfoView extends StatefulWidget {
   final FoodHealthyInfo healthyfoodinfo;

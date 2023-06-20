@@ -1,6 +1,7 @@
 import 'package:first_app_flutter/view/healthyFoodInfo.view.dart';
 import 'package:flutter/material.dart';
-import 'package:first_app_flutter/data/foodhealthyinfo.dart';
+
+import '../Static/foodhealthyinfo.dart';
 
 const itemSize = 105.0;
 

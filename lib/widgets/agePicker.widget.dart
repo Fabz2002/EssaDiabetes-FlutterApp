@@ -1,5 +1,6 @@
-import 'package:first_app_flutter/data/ages.dart';
 import 'package:flutter/cupertino.dart';
+
+import '../Static/ages.dart';
 
 class AgePicker extends StatefulWidget {
   final Function(int) onAgeSelected;
