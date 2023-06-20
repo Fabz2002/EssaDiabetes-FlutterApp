@@ -5,4 +5,5 @@ class User {
   static const genero = "genero";
   static const nivelActividad = "nivelActividad";
   static const peso = "peso";
+  static const comidas = "comidas";
 }

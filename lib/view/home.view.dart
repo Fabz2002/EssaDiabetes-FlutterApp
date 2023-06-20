@@ -63,7 +63,9 @@ class _HomeViewState extends State<HomeView> {
                 height: 50,
               ),
               const WelcomeMessageContainer(),
-              const CategoriesListScroll(),
+              CategoriesListScroll(
+                id: id,
+              ),
               const HealthyFoodTitle(),
               HealthyContainer(id: id),
             ],
@@ -101,7 +103,10 @@ class HealthyContainer extends StatelessWidget {
 }
 
 class CategoriesListScroll extends StatelessWidget {
+  final String id;
+
   const CategoriesListScroll({
+    required this.id,
     super.key,
   });
 
@@ -117,7 +122,8 @@ class CategoriesListScroll extends StatelessWidget {
               categorySubTitle: "Alimentos",
               img: "assets/images/registroAlimentos.jpg",
               press: () {
-                Navigator.pushNamed(context, Routes.FoodFormPage);
+                Navigator.pushNamed(context, Routes.FoodFormPage,
+                    arguments: id);
               }),
           CategoryCard(
               categoryTitle: "Calculadora",

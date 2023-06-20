@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:first_app_flutter/core/helper/provider.dart';
-import 'package:first_app_flutter/view/userProfile.view.dart';
 import 'package:flutter/material.dart';
 import 'package:first_app_flutter/view/splash.view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'Provider/idprovider.dart';
 import 'Routes/pages.dart';
 import 'core/ioc/injectable.dart';
 import 'firebase_options.dart';
@@ -38,6 +38,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          ChangeNotifierProvider<IdProvider>(create: (_) => IdProvider()),
           ChangeNotifierProvider<UserService>(create: (_) => UserService())
         ],
         builder: (context, _) {
@@ -45,7 +46,7 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             title: "EssaDiabetes",
             theme: ThemeData(fontFamily: 'Poppins'),
-            home: const UserProfileView(),
+            home: const SplashView(),
             routes: Pages.route,
           );
         });

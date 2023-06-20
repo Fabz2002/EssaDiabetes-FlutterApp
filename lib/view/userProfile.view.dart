@@ -97,16 +97,16 @@ class _UserProfileViewState extends State<UserProfileView> {
                                   const SizedBox(
                                     height: 20,
                                   ),
-                                  Column(
-                                    children: foodItems.map((foodItem) {
-                                      return FoodItem(
-                                        title: foodItem['title']!,
-                                        calories: foodItem['calories']!,
-                                        comments: foodItem['comments']!,
-                                        imagePath: foodItem['imagePath']!,
-                                      );
-                                    }).toList(),
-                                  ),
+                                  // Column(
+                                  //   children: foodItems.map((foodItem) {
+                                  //     return FoodItem(
+                                  //       title: foodItem['title']!,
+                                  //       calories: foodItem['calories']!,
+                                  //       comments: foodItem['comments']!,
+                                  //       imagePath: foodItem['imagePath']!,
+                                  //     );
+                                  //   }).toList(),
+                                  // ),
                                 ],
                               ),
                             ),
@@ -131,7 +131,9 @@ class _UserProfileViewState extends State<UserProfileView> {
           ),
         ],
       ),
-      drawer: DrawerForInfo(scaffoldKey: _scaffoldKey),
+      drawer: DrawerForInfo(
+        scaffoldKey: _scaffoldKey,
+      ),
     );
   }
 }

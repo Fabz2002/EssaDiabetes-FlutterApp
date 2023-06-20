@@ -1,6 +1,9 @@
 import 'package:first_app_flutter/Routes/routes.dart';
 import 'package:first_app_flutter/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../Provider/idprovider.dart';
 
 class DrawerForInfo extends StatelessWidget {
   const DrawerForInfo({
@@ -32,14 +35,20 @@ class DrawerForInfo extends StatelessWidget {
             title: const Text('Home'),
             onTap: () {
               _scaffoldKey.currentState?.openEndDrawer();
-              Navigator.pushNamed(context, Routes.Homepage, arguments: "");
+              final idProvider =
+                  Provider.of<IdProvider>(context, listen: false);
+              Navigator.pushNamed(context, Routes.Homepage,
+                  arguments: idProvider.id);
             },
           ),
           ListTile(
             title: const Text('Registro de Alimentos'),
             onTap: () {
               _scaffoldKey.currentState?.openEndDrawer();
-              Navigator.pushNamed(context, Routes.FoodFormPage);
+              final idProvider =
+                  Provider.of<IdProvider>(context, listen: false);
+              Navigator.pushNamed(context, Routes.FoodFormPage,
+                  arguments: idProvider.id);
             },
           ),
           ListTile(

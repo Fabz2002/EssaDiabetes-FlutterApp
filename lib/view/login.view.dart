@@ -4,6 +4,9 @@ import 'package:first_app_flutter/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:provider/provider.dart';
+
+import '../Provider/idprovider.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -45,6 +48,7 @@ class _LoginViewState extends State<LoginView> {
     }
 
     try {
+      Provider.of<IdProvider>(context, listen: false).setId(id);
       final db = FirebaseFirestore.instance;
       final documentRef = db.collection("Users").doc(id);
       bool documentExists =

@@ -22,7 +22,10 @@ abstract class Pages {
       return HomeView(id: id);
     },
     Routes.UserProfilePage: (BuildContext context) => const UserProfileView(),
-    Routes.FoodFormPage: (BuildContext context) => const FoodForm(),
+    Routes.FoodFormPage: (BuildContext context) {
+      final String id = ModalRoute.of(context)!.settings.arguments as String;
+      return FoodForm(id: id);
+    },
     Routes.CaloriesCalculatorPage: (BuildContext context) =>
         const CaloriesCalculatorView(),
   };
