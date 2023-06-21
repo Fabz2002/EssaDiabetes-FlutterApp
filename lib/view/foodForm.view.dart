@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 
 import '../Provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class FoodForm extends StatefulWidget {
   final String id;
@@ -21,6 +23,12 @@ class _FoodFormState extends State<FoodForm> {
 
   List<Map<String, dynamic>> datosComida = [];
   late String id;
+
+  bool _isPerGram = true;
+
+  File? selectedImage;
+  bool imageSelected = false;
+  String imagenCargada = '';
 
   @override
   void didChangeDependencies() {
@@ -42,6 +50,7 @@ class _FoodFormState extends State<FoodForm> {
         'nombre': datos['nombre'],
         'descripcion': datos['descripcion'],
         'calorias': datos['calorias'],
+        'imagenCargada': datos['imagenCargada'],
       };
     }).toList();
 
@@ -59,6 +68,20 @@ class _FoodFormState extends State<FoodForm> {
           SnackBar(content: Text('El usuario con ID $id no se encuentra.')),
         );
       }
+    }
+  }
+
+  Future<void> _selectImage() async {
+    final imagePicker = ImagePicker();
+    final pickedImage =
+        await imagePicker.pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        selectedImage = File(pickedImage.path);
+        imageSelected = true;
+        imagenCargada =
+            pickedImage.name; // Obtener el nombre de la imagen seleccionada
+      });
     }
   }
 
@@ -94,95 +117,168 @@ class _FoodFormState extends State<FoodForm> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Column(
+                  child: TextFormField(
+                    keyboardType: TextInputType.emailAddress,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                        icon: const Icon(Icons.lunch_dining),
+                        labelText: 'Nombre de la comida',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: const BorderSide(
+                                color: kPrimaryColor, width: 2.0))),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor ingresa el nombre de la comida';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      nombreComida = value;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 15.0, right: 15.0, top: 15, bottom: 5),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                        labelText: 'Calorías',
+                        icon: const Icon(Icons.fastfood),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: const BorderSide(
+                                color: kPrimaryColor, width: 2.0))),
+                    keyboardType: TextInputType.number,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor ingresa las calorías';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      calorias = double.tryParse(value) ?? 0;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 60),
+                  child: Row(
                     children: [
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Nombre de comida',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor ingresa el nombre de la comida';
-                          }
-                          return null;
-                        },
+                      const Text('Cada 100gr'),
+                      Switch(
+                        value: _isPerGram,
                         onChanged: (value) {
-                          nombreComida = value;
+                          setState(() {
+                            _isPerGram = value;
+                          });
                         },
                       ),
-                      const SizedBox(height: 10),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Descripción',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor ingresa la descripción';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          descripcion = value;
-                        },
-                      ),
-                      const SizedBox(height: 10),
-                      TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Calorías',
-                        ),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor ingresa las calorías';
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          calorias = double.tryParse(value) ?? 0;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            Map<String, dynamic> comidaData = {
-                              'nombre': nombreComida,
-                              'descripcion': descripcion,
-                              'calorias': calorias,
-                            };
-                            datosComida.add(comidaData);
-                            setState(() {
-                              nombreComida = nombreComida;
-                              descripcion = descripcion;
-                              calorias = calorias;
-                            });
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('Comida agregada con éxito')),
-                            );
-                          }
-                        },
-                        child: const Text('Agregar Comida'),
-                      ),
-                      const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () async {
-                          if (datosComida.isNotEmpty) {
-                            if (_formKey.currentState!.validate()) {
-                              await saveDataToDatabase();
-                            }
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('No se han agregado comidas')),
-                            );
-                          }
-                        },
-                        child: const Text('Guardar'),
-                      ),
+                      const Text('Por unidad'),
                     ],
                   ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 15.0, right: 15.0, top: 15, bottom: 5),
+                  child: TextFormField(
+                    autofocus: true,
+                    decoration: InputDecoration(
+                        icon: const Icon(Icons.sms),
+                        labelText: 'Descripción',
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                            borderSide: const BorderSide(
+                                color: Colors.lightBlue, width: 2.0))),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor ingresa la descripción';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      descripcion = value;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Column(
+                      children: [
+                        ElevatedButton.icon(
+                          onPressed: _selectImage,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: imageSelected ? kPrimaryColor : kDarkGreyColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          icon: const Icon(Icons.camera_alt),
+                          label: const Text(
+                            'Escoger foto',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ),
+                        if (imageSelected)
+                          Text(
+                            'Imagen seleccionada: $imagenCargada',
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      Map<String, dynamic> comidaData = {
+                        'nombre': nombreComida,
+                        'descripcion': descripcion,
+                        'calorias': calorias,
+                        'imagenCargada': imagenCargada,
+                      };
+                      datosComida.add(comidaData);
+                      setState(() {
+                        nombreComida = nombreComida;
+                        descripcion = descripcion;
+                        calorias = calorias;
+                      });
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('Comida agregada con éxito')),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kPrimaryColor,
+                  ),
+                  child: const Text('Agregar Comida'),
+                ),
+                const SizedBox(
+                  height: 0,
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (datosComida.isNotEmpty) {
+                      if (_formKey.currentState!.validate()) {
+                        await saveDataToDatabase();
+                      }
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('No se han agregado comidas')),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kPrimaryColor,
+                  ),
+                  child: const Text('Guardar'),
                 ),
               ],
             ),
