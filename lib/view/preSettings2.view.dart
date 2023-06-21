@@ -262,7 +262,7 @@ class _PreSettings2ViewState extends State<PreSettings2View> {
     );
   }
 
-  Widget _buildButtonRow(int index, int number) {
+  Widget buildButtonRow(int index, int number) {
     final isSelected = _selectedButtonIndex == index;
 
     return TextButton(
