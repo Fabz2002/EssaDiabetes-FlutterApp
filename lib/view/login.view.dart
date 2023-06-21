@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_app_flutter/Routes/routes.dart';
+import 'package:first_app_flutter/services/notification.services.dart';
 import 'package:first_app_flutter/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -66,6 +67,8 @@ class _LoginViewState extends State<LoginView> {
       print("Authenticated: $authenticated");
 
       if (authenticated) {
+        showNotifications("Bienvenido a EssaDiabetes",
+            ",Ingresaste con el dni $id correctamente");
         // ignore: use_build_context_synchronously
         Navigator.pushNamed(context, Routes.PresettingPage, arguments: id);
       }
