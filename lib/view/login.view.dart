@@ -58,7 +58,7 @@ class _LoginViewState extends State<LoginView> {
         await documentRef.set({});
       }
       bool authenticated = await auth.authenticate(
-        localizedReason: "Escanee su huella digital para autenticar",
+        localizedReason: "Escane su huella digital para autenticar",
         options:
             const AuthenticationOptions(stickyAuth: true, biometricOnly: true),
       );
@@ -68,7 +68,7 @@ class _LoginViewState extends State<LoginView> {
 
       if (authenticated) {
         showNotifications("Bienvenido a EssaDiabetes",
-            ",Ingresaste con el dni $id correctamente");
+            "Ingresaste con el dni $id correctamente");
         // ignore: use_build_context_synchronously
         Navigator.pushNamed(context, Routes.PresettingPage, arguments: id);
       }

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:first_app_flutter/core/helper/provider.dart';
+import 'package:first_app_flutter/services/notification.services.dart';
 import 'package:flutter/material.dart';
 import 'package:first_app_flutter/view/splash.view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +17,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await initNotifications();
   runApp(MultiBlocProvider(
     providers: BlocProviderHelper().providres,
     child: const MyApp(),
