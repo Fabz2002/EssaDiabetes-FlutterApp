@@ -9,6 +9,10 @@ import '../Provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
+import '../Routes/routes.dart';
+
+import 'package:firebase_storage/firebase_storage.dart';
+
 class FoodForm extends StatefulWidget {
   final String id;
   const FoodForm({Key? key, required this.id}) : super(key: key);
@@ -75,13 +79,27 @@ class _FoodFormState extends State<FoodForm> {
     final imagePicker = ImagePicker();
     final pickedImage =
         await imagePicker.pickImage(source: ImageSource.gallery);
+        
     if (pickedImage != null) {
       setState(() {
         selectedImage = File(pickedImage.path);
         imageSelected = true;
-        imagenCargada =
-            pickedImage.name; // Obtener el nombre de la imagen seleccionada
+        imagenCargada = pickedImage.name;
       });
+
+      final storageRef = FirebaseStorage.instance.refFromURL(
+          'gs://firstproject-99744.appspot.com/comidas/$imagenCargada');
+
+      await storageRef.putFile(selectedImage!);
+
+      // ignore: unused_local_variable
+      String imageUrl = await storageRef.getDownloadURL();
+      // Guardar la URL de la imagen en la base de datos
+      
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Imagen cargada correctamente')),
+      );
     }
   }
 
@@ -210,7 +228,8 @@ class _FoodFormState extends State<FoodForm> {
                         ElevatedButton.icon(
                           onPressed: _selectImage,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: imageSelected ? kPrimaryColor : kDarkGreyColor,
+                            backgroundColor:
+                                imageSelected ? kPrimaryColor : kDarkGreyColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -267,6 +286,9 @@ class _FoodFormState extends State<FoodForm> {
                     if (datosComida.isNotEmpty) {
                       if (_formKey.currentState!.validate()) {
                         await saveDataToDatabase();
+                        // ignore: use_build_context_synchronously
+                        Navigator.pushNamed(context, Routes.UserProfilePage,
+                            arguments: id);
                       }
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
