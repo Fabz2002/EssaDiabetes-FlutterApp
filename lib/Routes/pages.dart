@@ -1,5 +1,6 @@
 import 'package:first_app_flutter/view/caloriesCalculator.view.dart';
 import 'package:first_app_flutter/view/foodForm.view.dart';
+import 'package:first_app_flutter/view/foodSchedule.view.dart';
 import 'package:first_app_flutter/view/login.view.dart';
 import 'package:first_app_flutter/view/preSettings.view.dart';
 import 'package:first_app_flutter/view/preSettings2.view.dart';
@@ -28,5 +29,7 @@ abstract class Pages {
     },
     Routes.CaloriesCalculatorPage: (BuildContext context) =>
         const CaloriesCalculatorView(),
+    Routes.ScheduleFoodPage: (BuildContext context) =>
+        const PlanificacionComidas(),
   };
 }

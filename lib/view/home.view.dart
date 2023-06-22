@@ -136,7 +136,9 @@ class CategoriesListScroll extends StatelessWidget {
               categoryTitle: "Planificación",
               categorySubTitle: "Comida",
               img: "assets/images/planificacionAlimentos.jpg",
-              press: () {})
+              press: () {
+                Navigator.pushNamed(context, Routes.ScheduleFoodPage);
+              })
         ]),
       ),
     );

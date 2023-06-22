@@ -65,6 +65,13 @@ class DrawerForInfo extends StatelessWidget {
               Navigator.pushNamed(context, Routes.UserProfilePage);
             },
           ),
+          ListTile(
+            title: const Text('Planificacion del dia'),
+            onTap: () {
+              _scaffoldKey.currentState?.openEndDrawer();
+              Navigator.pushNamed(context, Routes.ScheduleFoodPage);
+            },
+          ),
         ],
       ),
     );

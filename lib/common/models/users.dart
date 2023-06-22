@@ -8,15 +8,13 @@ class UserModel {
       this.edad,
       this.genero,
       this.nivelActividad,
-      this.peso,
-      this.comidas});
+      this.peso});
   final double? altura;
   final double? caloriasNecesarias;
   final int? edad;
   final String? genero;
   final double? nivelActividad;
   final double? peso;
-  final List<Map<String, Object>>? comidas;
   factory UserModel.fromSnapShot(DocumentSnapshot snapshot) {
     return UserModel(
         altura: snapshot.get(User.altura) ?? 0,
@@ -24,7 +22,6 @@ class UserModel {
         edad: snapshot.get(User.edad) ?? 0,
         genero: snapshot.get(User.genero) ?? "",
         nivelActividad: snapshot.get(User.nivelActividad) ?? 0,
-        comidas: snapshot.get(User.comidas) ?? [],
         peso: snapshot.get(User.peso) ?? 0);
   }
 }

@@ -8,4 +8,5 @@ abstract class Routes {
   static const String UserProfilePage = "/userprofile";
   static const String FoodFormPage = "/foodform";
   static const String CaloriesCalculatorPage = "/calculator";
+  static const String ScheduleFoodPage = "/schedulefood";
 }

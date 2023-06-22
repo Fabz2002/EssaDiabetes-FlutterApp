@@ -18,9 +18,7 @@ class FoodRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TitleKindsFood(
-            title:
-                title), // Asegúrate de que 'TitleKindsFood' esté definido en tu código
+        TitleKindsFood(title: title),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: List.generate(itemsList.length, (index) {

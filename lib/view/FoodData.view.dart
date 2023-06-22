@@ -128,9 +128,12 @@ class _FoodInfoState extends State<FoodInfo> {
                               ],
                             ),
                             const SizedBox(
-                              height: 40,
+                              height: 20,
                             ),
-                            const ButtonAddToListFood()
+                            const ButtonAddToListFood(),
+                            const SizedBox(
+                              height: 20,
+                            ),
                           ]),
                     ),
                   ))
