@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
 import '../theme.dart';
@@ -33,7 +35,7 @@ class FoodItem extends StatelessWidget {
             ),
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.3,
-              child: Image.asset(
+              child: Image.network(
                 imagePath,
                 fit: BoxFit.cover,
               ),
