@@ -1,12 +1,16 @@
 // ignore_for_file: avoid_print
 
 import 'package:first_app_flutter/widgets/drawerContainer.widget.dart';
+import 'package:first_app_flutter/widgets/foodItem.widget.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import '../theme.dart';
 
 class UserProfileView extends StatefulWidget {
-  const UserProfileView({Key? key}) : super(key: key);
+  final String id;
+  const UserProfileView({Key? key, required this.id}) : super(key: key);
 
   @override
   State<UserProfileView> createState() => _UserProfileViewState();
@@ -14,6 +18,35 @@ class UserProfileView extends StatefulWidget {
 
 class _UserProfileViewState extends State<UserProfileView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  List<Map<String, dynamic>> comidaList = [];
+
+  Future<void> fetchComidaData() async {
+    final db = FirebaseFirestore.instance;
+    final documentSnapshot = await db.collection('Users').doc(widget.id).get();
+
+    if (documentSnapshot.exists) {
+      final data = documentSnapshot.data();
+      final comidas = data?['comidas'] as List<dynamic>;
+
+      comidaList = comidas.map((comida) {
+        return {
+          'nombre': comida['nombre'],
+          'descripcion': comida['descripcion'],
+          'calorias': comida['calorias'],
+          'imagenCargada': comida['imagenCargada'],
+        };
+      }).toList();
+
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchComidaData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,21 +126,35 @@ class _UserProfileViewState extends State<UserProfileView> {
                             child: SingleChildScrollView(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  // Column(
-                                  //   children: foodItems.map((foodItem) {
-                                  //     return FoodItem(
-                                  //       title: foodItem['title']!,
-                                  //       calories: foodItem['calories']!,
-                                  //       comments: foodItem['comments']!,
-                                  //       imagePath: foodItem['imagePath']!,
-                                  //     );
-                                  //   }).toList(),
-                                  // ),
-                                ],
+                                children: comidaList.map((comida) {
+                                  final nombre = comida['nombre'];
+                                  final descripcion = comida['descripcion'];
+                                  final double calorias = comida['calorias'];
+                                  final caloriasString = calorias.toString(); 
+                                  // ignore: unused_local_variable
+                                  final imagenCargada = comida['imagenCargada'];
+                                  // ignore: unused_local_variable
+                                  final filePath = 'comidas/$imagenCargada';
+                                  return FutureBuilder(
+                                    future: firebase_storage
+                                        .FirebaseStorage.instance
+                                        .ref(filePath)
+                                        .getDownloadURL(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const CircularProgressIndicator();
+                                      } else {
+                                        return FoodItem(
+                                        title: nombre, 
+                                        calories: caloriasString, 
+                                        comments: descripcion, 
+                                        imagePath: snapshot.data);
+                                      }
+                                    },
+                                  );
+                                }).toList(),
                               ),
                             ),
                           ),
@@ -123,9 +170,7 @@ class _UserProfileViewState extends State<UserProfileView> {
             bottom: 20,
             right: 20,
             child: FloatingActionButton(
-              onPressed: () {
-                // Acciones al presionar el botón sticky
-              },
+              onPressed: () {},
               child: const Icon(Icons.add),
             ),
           ),
