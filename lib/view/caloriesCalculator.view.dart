@@ -594,11 +594,11 @@ class _CaloriesCalculatorViewState extends State<CaloriesCalculatorView> {
 
     double result;
     if (selectedGender == 'Masculino') {
-      result = (66 + (13.7 * parsedWeight)) +
-          ((5 * parsedHeight) - (6.8 * age)) * nivelActividad;
+      result = (5 + (5 * parsedWeight)) +
+          ((6.25 * parsedHeight) - (5 * age)) * nivelActividad;
     } else {
-      result = (655 + (9.6 * parsedWeight)) +
-          ((1.8 * parsedHeight) - (4.7 * age)) * nivelActividad;
+      result = ((9 * parsedWeight)) +
+          ((6.25 * parsedHeight) - (5 * age) - 161) * nivelActividad;
     }
 
     setState(() {
