@@ -22,7 +22,10 @@ abstract class Pages {
       final String id = ModalRoute.of(context)!.settings.arguments as String;
       return HomeView(id: id);
     },
-    Routes.UserProfilePage: (BuildContext context) => const UserProfileView(),
+    Routes.UserProfilePage: (BuildContext context) {
+      final String id = ModalRoute.of(context)!.settings.arguments as String;
+      return UserProfileView(id: id);
+    },
     Routes.FoodFormPage: (BuildContext context) {
       final String id = ModalRoute.of(context)!.settings.arguments as String;
       return FoodForm(id: id);
