@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first_app_flutter/Routes/routes.dart';
 import 'package:first_app_flutter/services/notification.services.dart';
@@ -27,8 +29,7 @@ class _LoginViewState extends State<LoginView> {
   }
 
   Future<void> _authenticate() async {
-    final id = _idController.text
-        .trim(); // Elimina espacios en blanco al inicio y final
+    final id = _idController.text.trim();
     if (id.isEmpty || id.length != 8 || id.startsWith('0')) {
       showDialog(
         context: context,
@@ -54,26 +55,30 @@ class _LoginViewState extends State<LoginView> {
       final documentRef = db.collection("Users").doc(id);
       bool documentExists =
           await documentRef.get().then((snapshot) => snapshot.exists);
+
       if (!documentExists) {
         await documentRef.set({});
       }
+
       bool authenticated = await auth.authenticate(
         localizedReason: "Escane su huella digital para autenticar",
         options:
             const AuthenticationOptions(stickyAuth: true, biometricOnly: true),
       );
 
-      // ignore: avoid_print
       print("Authenticated: $authenticated");
 
       if (authenticated) {
         showNotifications("Bienvenido a EssaDiabetes",
             "Ingresaste con el dni $id correctamente");
-        // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, Routes.PresettingPage, arguments: id);
+
+        if (documentExists) {
+          Navigator.pushNamed(context, Routes.Homepage, arguments: id);
+        } else {
+          Navigator.pushNamed(context, Routes.PresettingPage, arguments: id);
+        }
       }
     } on PlatformException catch (e) {
-      // ignore: avoid_print
       print(e);
     }
   }
@@ -128,16 +133,13 @@ class _LoginViewState extends State<LoginView> {
                           ),
                         ),
                       ),
-                      // ignore: avoid_unnecessary_containers
                       Container(
                         child: TextField(
                           controller: _idController,
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter
-                                .digitsOnly, // Acepta solo dígitos
-                            LengthLimitingTextInputFormatter(
-                                8), // Limita la longitud máxima a 8 caracteres
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(8),
                           ],
                           style: const TextStyle(
                             color: kPrimaryColor,
@@ -146,19 +148,16 @@ class _LoginViewState extends State<LoginView> {
                           decoration: const InputDecoration(
                             labelText: 'Ingrese su DNI',
                             labelStyle: TextStyle(
-                              color: Colors
-                                  .blue, // Cambia el color del label a blanco
+                              color: Colors.blue,
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Colors
-                                    .blue, // Cambia el color del borde cuando no está enfocado
+                                color: Colors.blue,
                               ),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Colors
-                                    .blue, // Cambia el color del borde cuando está enfocado
+                                color: Colors.blue,
                               ),
                             ),
                           ),
