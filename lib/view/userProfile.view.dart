@@ -5,7 +5,10 @@ import 'package:first_app_flutter/widgets/foodItem.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:provider/provider.dart';
 
+import '../Provider/idprovider.dart';
+import '../Routes/routes.dart';
 import '../theme.dart';
 
 class UserProfileView extends StatefulWidget {
@@ -20,6 +23,7 @@ class _UserProfileViewState extends State<UserProfileView> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   List<Map<String, dynamic>> comidaList = [];
+  late String id;
 
   Future<void> fetchComidaData() async {
     final db = FirebaseFirestore.instance;
@@ -48,11 +52,23 @@ class _UserProfileViewState extends State<UserProfileView> {
     fetchComidaData();
   }
 
-  void borrarComida(int index) {
-    setState(() {
-      comidaList.removeAt(index);
-    });
-  }
+  void borrarComida(int index) async {
+  // Obtener la comida que se va a borrar
+  final comidaABorrar = comidaList[index];
+
+  // Eliminar la comida de la lista en la UI
+  setState(() {
+    comidaList.removeAt(index);
+  });
+
+  // Acceder a la base de datos
+  final db = FirebaseFirestore.instance;
+
+  // Realizar la operación de actualización para eliminar la comida
+  await db.collection('Users').doc(widget.id).update({
+    'comidas': FieldValue.arrayRemove([comidaABorrar])
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -181,8 +197,14 @@ class _UserProfileViewState extends State<UserProfileView> {
             bottom: 20,
             right: 20,
             child: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                final idProvider =
+                  Provider.of<IdProvider>(context, listen: false);
+                Navigator.pushNamed(context, Routes.FoodFormPage,
+                  arguments: idProvider.id);
+              },
               child: const Icon(Icons.add),
+              
             ),
           ),
         ],
