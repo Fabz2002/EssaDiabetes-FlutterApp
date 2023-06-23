@@ -122,6 +122,9 @@ class _UserProfileViewState extends State<UserProfileView> {
                               ),
                             ],
                           ),
+                          const SizedBox(
+                            height: 20,
+                          ),
                           Expanded(
                             child: SingleChildScrollView(
                               child: Column(
@@ -130,7 +133,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                   final nombre = comida['nombre'];
                                   final descripcion = comida['descripcion'];
                                   final double calorias = comida['calorias'];
-                                  final caloriasString = calorias.toString(); 
+                                  final caloriasString = calorias.toString();
                                   // ignore: unused_local_variable
                                   final imagenCargada = comida['imagenCargada'];
                                   // ignore: unused_local_variable
@@ -147,10 +150,10 @@ class _UserProfileViewState extends State<UserProfileView> {
                                         return const CircularProgressIndicator();
                                       } else {
                                         return FoodItem(
-                                        title: nombre, 
-                                        calories: caloriasString, 
-                                        comments: descripcion, 
-                                        imagePath: snapshot.data);
+                                            title: nombre,
+                                            calories: caloriasString,
+                                            comments: descripcion,
+                                            imagePath: snapshot.data);
                                       }
                                     },
                                   );

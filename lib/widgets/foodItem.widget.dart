@@ -72,13 +72,16 @@ class FoodItem extends StatelessWidget {
           const SizedBox(
             width: 10,
           ),
-          const Align(
+          Align(
             alignment: Alignment.topRight,
             child: Padding(
-              padding: EdgeInsets.only(right: 8.0, top: 5.0),
-              child: Text(
-                'Borrar',
-                style: TextStyle(color: Colors.red, fontSize: 16),
+              padding: const EdgeInsets.only(right: 8.0, top: 5.0),
+              child: GestureDetector(
+                onTap: () {},
+                child: const Text(
+                  'Borrar',
+                  style: TextStyle(color: Colors.red, fontSize: 16),
+                ),
               ),
             ),
           ),
