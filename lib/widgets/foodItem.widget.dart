@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 import '../theme.dart';
@@ -9,14 +7,16 @@ class FoodItem extends StatelessWidget {
   final String calories;
   final String comments;
   final String imagePath;
+  final VoidCallback? onDelete;
 
   const FoodItem({
-    super.key,
+    Key? key,
     required this.title,
     required this.calories,
     required this.comments,
     required this.imagePath,
-  });
+    required this.onDelete,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +77,7 @@ class FoodItem extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(right: 8.0, top: 5.0),
               child: GestureDetector(
-                onTap: () {},
+                onTap: onDelete,
                 child: const Text(
                   'Borrar',
                   style: TextStyle(color: Colors.red, fontSize: 16),

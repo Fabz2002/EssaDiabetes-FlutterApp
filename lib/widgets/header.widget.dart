@@ -1,5 +1,8 @@
 import 'package:first_app_flutter/Routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../Provider/idprovider.dart';
 
 class Header extends StatelessWidget {
   const Header({
@@ -30,7 +33,10 @@ class Header extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, Routes.UserProfilePage);
+              final idProvider =
+                  Provider.of<IdProvider>(context, listen: false);
+              Navigator.pushNamed(context, Routes.UserProfilePage,
+                  arguments: idProvider.id);
             },
             child: CircleAvatar(
               radius: 20,

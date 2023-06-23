@@ -48,6 +48,12 @@ class _UserProfileViewState extends State<UserProfileView> {
     fetchComidaData();
   }
 
+  void borrarComida(int index) {
+    setState(() {
+      comidaList.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,9 +140,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                   final descripcion = comida['descripcion'];
                                   final double calorias = comida['calorias'];
                                   final caloriasString = calorias.toString();
-                                  // ignore: unused_local_variable
                                   final imagenCargada = comida['imagenCargada'];
-                                  // ignore: unused_local_variable
                                   final filePath = 'comidas/$imagenCargada';
                                   return FutureBuilder(
                                     future: firebase_storage
@@ -150,10 +154,14 @@ class _UserProfileViewState extends State<UserProfileView> {
                                         return const CircularProgressIndicator();
                                       } else {
                                         return FoodItem(
-                                            title: nombre,
-                                            calories: caloriasString,
-                                            comments: descripcion,
-                                            imagePath: snapshot.data);
+                                          title: nombre,
+                                          calories: caloriasString,
+                                          comments: descripcion,
+                                          imagePath: snapshot.data,
+                                          onDelete: () {
+                                            borrarComida(comidaList.indexOf(comida));
+                                          },
+                                        );
                                       }
                                     },
                                   );

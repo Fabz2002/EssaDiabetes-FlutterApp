@@ -1,3 +1,5 @@
+// ignore_for_file: sort_child_properties_last
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -72,8 +74,8 @@ class _PlanificacionComidasState extends State<PlanificacionComidas> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Expanded(
-                                child: const Text('Desayuno:'),
+                              const Expanded(
+                                child: Text('Desayuno:'),
                                 flex: 1,
                               ),
                               Expanded(
@@ -104,8 +106,8 @@ class _PlanificacionComidasState extends State<PlanificacionComidas> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Expanded(
-                                child: const Text('Almuerzo:'),
+                              const Expanded(
+                                child: Text('Almuerzo:'),
                                 flex: 1,
                               ),
                               Expanded(
@@ -135,8 +137,8 @@ class _PlanificacionComidasState extends State<PlanificacionComidas> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Expanded(
-                                child: const Text('Cena:'),
+                              const Expanded(
+                                child: Text('Cena:'),
                                 flex: 1,
                               ),
                               Expanded(

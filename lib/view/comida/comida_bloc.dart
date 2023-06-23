@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../common/models/comida.dart';
-import '../../common/models/users.dart';
+// import '../../common/models/users.dart';
 import '../../core/error/failure.dart';
 import '../interfaces/i_commida.dart';
 

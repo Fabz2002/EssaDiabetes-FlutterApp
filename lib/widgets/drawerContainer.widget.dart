@@ -62,14 +62,20 @@ class DrawerForInfo extends StatelessWidget {
             title: const Text('Configuración'),
             onTap: () {
               _scaffoldKey.currentState?.openEndDrawer();
-              Navigator.pushNamed(context, Routes.UserProfilePage);
+              final idProvider =
+                  Provider.of<IdProvider>(context, listen: false);
+              Navigator.pushNamed(context, Routes.UserProfilePage,
+                  arguments: idProvider.id);
             },
           ),
           ListTile(
             title: const Text('Planificacion del dia'),
             onTap: () {
               _scaffoldKey.currentState?.openEndDrawer();
-              Navigator.pushNamed(context, Routes.ScheduleFoodPage);
+              final idProvider =
+                  Provider.of<IdProvider>(context, listen: false);
+              Navigator.pushNamed(context, Routes.ScheduleFoodPage,
+                  arguments: idProvider.id);
             },
           ),
         ],
