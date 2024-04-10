@@ -1,16 +1,23 @@
-# first_app_flutter
+# EssaDiabetes App
 
-A new Flutter project.
+## Description
 
-## Getting Started
+`essaDiabetes` is an application developed in Flutter, inspired by an application from the Essalud hospital in Peru. This application is designed to assist a specific age and niche group of diabetic individuals in the city of Trujillo in managing and improving their condition.
 
-This project is a starting point for a Flutter application.
+The application provides personalized guidance and recommendations based on the user's weight, age, and level of physical activity. It also takes into account the user's personal preferences.
 
-A few resources to get you started if this is your first Flutter project:
+This application was created using Flutter and incorporates good practices such as inversion of control (IoC), BLoC pattern, and providers. It features a custom UI design and uses Firebase as a Backend as a Service (BaaS), albeit with some limitations.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Features
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- **Personalized Recommendations**: Provides suggestions based on the user's weight, age, and level of physical activity.
+- **User Preferences**: The application adapts to the user's preferences to provide a more personalized experience.
+
+## Installation
+
+To install and run this application, you will need Flutter and Dart installed on your machine.
+
+1. Clone this repository
+2. Navigate to the project directory in your terminal
+3. Run `flutter pub get`
+4. Run `flutter run`
